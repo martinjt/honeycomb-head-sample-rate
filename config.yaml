@@ -1,0 +1,28 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+
+processors:
+  batch:
+  transform/tracestate_sampling:
+    trace_statements:
+      - context: span
+        statements:
+          - set(attributes["SampleRate"], trace_state["hny"])
+          - set(attributes["tracestate"], trace_state)
+
+exporters:
+  debug:
+    verbosity: detailed
+  otlp:
+    endpoint: "api.honeycomb.io:443"
+    headers:
+      "x-honeycomb-team": "$HONEYCOMB_API_KEY"
+
+service:
+  pipelines:
+    traces/default:
+      receivers: [otlp]
+      processors: [transform/tracestate_sampling]
+      exporters: [debug]

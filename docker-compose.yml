@@ -1,0 +1,9 @@
+services:
+  collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    volumes:
+      - ./config.yaml:/etc/otelcol-contrib/config.yaml
+    ports:
+      - "4317:4317"
+    environment:
+      - HONEYCOMB_API_KEY=${HONEYCOMB_API_KEY}
