@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using System.Diagnostics;
 using OpenTelemetry.Trace;
 
 public class HealthCheckSampler<T> : Sampler where T : Sampler
@@ -27,7 +26,9 @@ public class HealthCheckSampler<T> : Sampler where T : Sampler
                 var samplingAttributes = ImmutableList.CreateBuilder<KeyValuePair<string, object>>();
                 samplingAttributes.Add(new("SampleRate", _keepPercentage));
 
-                return new SamplingResult(SamplingDecision.RecordAndSample, samplingAttributes.ToImmutableList(), $"hny=sr:{_keepPercentage}");          
+                var sampleRate = Math.Round((double)(100 / _keepPercentage));
+
+                return new SamplingResult(SamplingDecision.RecordAndSample, samplingAttributes.ToImmutableList(), $"hny=sr:{sampleRate}");          
             }
                 
             return new SamplingResult(SamplingDecision.Drop);

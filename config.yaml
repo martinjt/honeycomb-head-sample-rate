@@ -9,8 +9,7 @@ processors:
     trace_statements:
       - context: span
         statements:
-          - set(attributes["SampleRate"], trace_state["hny"])
-          - set(attributes["tracestate"], trace_state)
+          - set(attributes["SampleRate"], ParseKeyValue(trace_state["hny"], ":")["sr"])
 
 exporters:
   debug:
@@ -25,4 +24,4 @@ service:
     traces/default:
       receivers: [otlp]
       processors: [transform/tracestate_sampling]
-      exporters: [debug]
+      exporters: [oltp, debug]

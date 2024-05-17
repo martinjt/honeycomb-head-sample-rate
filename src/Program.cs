@@ -9,7 +9,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<AlwaysOnSampler>();
-builder.Services.AddSingleton(sp => new HealthCheckSampler<AlwaysOnSampler>(100, 
+builder.Services.AddSingleton(sp => new HealthCheckSampler<AlwaysOnSampler>(10, 
     sp.GetRequiredService<IHttpContextAccessor>(), sp.GetRequiredService<AlwaysOnSampler>()));
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHealthChecks();
